@@ -76,6 +76,7 @@ En "Particiones.md" se deja un ejemplo de como se trabajarán las particiones
 Se recomienda el uso de variables de entorno ya que durante todo el proceso se usaran comandos donde las rutas apuntadas están declaradas como por ejemplo "$LFS/tools". Las variables son:
     export LFS=/mnt/lfs
     umask 022
+    export MAKEFLAGS=-j$(nproc)
 
 Configurar el umask en 022 garantiza que los archivos recién creados y Los directorios solo pueden ser escritos por su propietario, pero son legibles por cualquiera. Un umask excesivamente permisivo puede dejar huecos de seguridad en el LFS, y un umask demasiado restrictivo puede causar extraños problemas para construir o usar el sistema LFS.
 Para una mayor comodidad puede convenir declarar las variables en ~/.bashrc por si se cierra sesión y se sigue más adelante.
