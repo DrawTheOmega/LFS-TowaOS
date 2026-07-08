@@ -92,7 +92,7 @@ mkdir build
 pushd build
   ../configure --disable-bzlib      \
                --disable-libseccomp \
-               --disable-xzlib      \
+               --disable-gzlib      \
                --disable-zlib
   make
 popd
@@ -104,6 +104,8 @@ cd $LFS/sources/
 rm -rf file-5.46
 
 echo "Findutils-4.10.0"
+tar -xvf findutils-4.10.0.tar.xz
+cd findutils-4.10.0
 ./configure --prefix=/usr                   \
             --localstatedir=/var/lib/locate \
             --host=$LFS_TGT                 \
@@ -157,15 +159,15 @@ cd $LFS/sources/
 rm -rf make-4.4.1
 
 echo "Patch-2.8"
-tar -xvf patch-2.8.6.tar.xz
-cd patch-2.8.6
+tar -xvf patch-2.8.tar.xz
+cd patch-2.8
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
             --build=$(build-aux/config.guess)
 make
 make DESTDIR=$LFS install
 cd $LFS/sources/
-rm -rf patch-2.8.6
+rm -rf patch-2.8
 
 echo "Sed-4.9"
 tar -xvf sed-4.9.tar.xz
@@ -189,8 +191,8 @@ make DESTDIR=$LFS install
 cd $LFS/sources/
 rm -rf tar-1.35
 
-echo "Xz-5.8.2"
-tar -xvf xz-5.8.2.tar.xz
+echo "xz-5.8.2"
+tar -xvf xz-5.8.2.tar.gz
 cd xz-5.8.2
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
@@ -233,7 +235,7 @@ tar -xf ../mpfr-4.2.2.tar.xz
 mv -v mpfr-4.2.2 mpfr
 tar -xf ../gmp-6.3.0.tar.xz
 mv -v gmp-6.3.0 gmp
-tar -xf ../mpc-1.3.1.tar.gz
+tar -xf ../mpc-1.3.1.tar.xz
 mv -v mpc-1.3.1 mpc
 case $(uname -m) in
   x86_64)
