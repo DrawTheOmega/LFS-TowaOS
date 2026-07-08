@@ -1,3 +1,8 @@
+#!/bin/bash
+
+# Las particiones ya deben existir y estar formateadas. Este script solo las monta en el sistema de archivos LFS.
+# Usar fdisk o cfdisk para crear las particiones y mkfs para formatearlas antes de ejecutar este script.
+
 mkdir -pv $LFS
 mount -v -t ext4 /dev/sda6 $LFS
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Para entrar en chroot si salimos de él
+
 chroot "$LFS" /usr/bin/env -i   \
     HOME=/root                  \
     TERM="$TERM"                \

@@ -18,7 +18,7 @@ Se van a crear dentro de $LFS los directorios /etc, /var, /usr/bin, /usr/lib, /u
 Luego se crean enlaces simbólicos desde /usr/ hacia el raiz de /bin, /lib y /sbin.
 
 Luego se crea un directorio para la compilación cruzada (capítulo 6 y mejor explicado en la documentación oficial)
-mkdir -pv $LFS/tools
+    mkdir -pv $LFS/tools
 
 ## Usuario lfs
 
