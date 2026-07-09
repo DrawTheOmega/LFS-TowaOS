@@ -3,7 +3,9 @@
 cd $LFS/sources/
 
 echo "M4-1.4.21"
-tar -xvf m4-1.4.21.tar.xz
+sleep 3
+echo "Extrayendo m4-1.4.21.tar.xz"
+tar -xf m4-1.4.21.tar.xz
 cd m4-1.4.21
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
@@ -14,7 +16,9 @@ cd $LFS/sources/
 rm -rf m4-1.4.21
 
 echo "Ncurses-6.6"
-tar -xvf ncurses-6.6.tar.gz
+sleep 3
+echo "Extrayendo ncurses-6.6.tar.gz"
+tar -xf ncurses-6.6.tar.gz
 cd ncurses-6.6
 mkdir build
 pushd build
@@ -44,7 +48,9 @@ cd $LFS/sources/
 rm -rf ncurses-6.6
 
 echo "Bash-5.3"
-tar -xvf bash-5.3.tar.gz
+sleep 3
+echo "Extrayendo bash-5.3.tar.gz"
+tar -xf bash-5.3.tar.gz
 cd bash-5.3
 ./configure --prefix=/usr                      \
             --build=$(sh support/config.guess) \
@@ -57,7 +63,9 @@ cd $LFS/sources/
 rm -rf bash-5.3
 
 echo "Coreutils-9.10"
-tar -xvf coreutils-9.10.tar.xz
+sleep 3
+echo "Extrayendo coreutils-9.10.tar.xz"
+tar -xf coreutils-9.10.tar.xz
 cd coreutils-9.10
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
@@ -74,7 +82,9 @@ cd $LFS/sources/
 rm -rf coreutils-9.10
 
 echo "Diffutils-3.12"
-tar -xvf diffutils-3.12.tar.xz
+sleep 3
+echo "Extrayendo diffutils-3.12.tar.xz"
+tar -xf diffutils-3.12.tar.xz
 cd diffutils-3.12
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
@@ -86,7 +96,9 @@ cd $LFS/sources/
 rm -rf diffutils-3.12
 
 echo "File-5.46"
-tar -xvf file-5.46.tar.gz
+sleep 3
+echo "Extrayendo file-5.46.tar.gz"
+tar -xf file-5.46.tar.gz
 cd file-5.46
 mkdir build
 pushd build
@@ -104,7 +116,9 @@ cd $LFS/sources/
 rm -rf file-5.46
 
 echo "Findutils-4.10.0"
-tar -xvf findutils-4.10.0.tar.xz
+sleep 3
+echo "Extrayendo findutils-4.10.0.tar.xz"
+tar -xf findutils-4.10.0.tar.xz
 cd findutils-4.10.0
 ./configure --prefix=/usr                   \
             --localstatedir=/var/lib/locate \
@@ -116,7 +130,9 @@ cd $LFS/sources/
 rm -rf findutils-4.10.0
 
 echo "Gawk-5.3.2"
-tar -xvf gawk-5.3.2.tar.xz
+sleep 3
+echo "Extrayendo gawk-5.3.2.tar.xz"
+tar -xf gawk-5.3.2.tar.xz
 cd gawk-5.3.2
 sed -i 's/extras//' Makefile.in
 ./configure --prefix=/usr   \
@@ -128,7 +144,9 @@ cd $LFS/sources/
 rm -rf gawk-5.3.2
 
 echo "Grep-3.12"
-tar -xvf grep-3.12.tar.xz
+sleep 3
+echo "Extrayendo grep-3.12.tar.xz"
+tar -xf grep-3.12.tar.xz
 cd grep-3.12
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
@@ -139,7 +157,9 @@ cd $LFS/sources/
 rm -rf grep-3.12
 
 echo "Gzip-1.14"
-tar -xvf gzip-1.14.tar.xz
+sleep 3
+echo "Extrayendo gzip-1.14.tar.xz"
+tar -xf gzip-1.14.tar.xz
 cd gzip-1.14
 ./configure --prefix=/usr --host=$LFS_TGT
 make
@@ -148,7 +168,9 @@ cd $LFS/sources/
 rm -rf gzip-1.14
 
 echo "Make-4.4.1"
-tar -xvf make-4.4.1.tar.gz
+sleep 3
+echo "Extrayendo make-4.4.1.tar.gz"
+tar -xf make-4.4.1.tar.gz
 cd make-4.4.1
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
@@ -159,7 +181,9 @@ cd $LFS/sources/
 rm -rf make-4.4.1
 
 echo "Patch-2.8"
-tar -xvf patch-2.8.tar.xz
+sleep 3
+echo "Extrayendo patch-2.8.tar.xz"
+tar -xf patch-2.8.tar.xz
 cd patch-2.8
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
@@ -170,7 +194,9 @@ cd $LFS/sources/
 rm -rf patch-2.8
 
 echo "Sed-4.9"
-tar -xvf sed-4.9.tar.xz
+sleep 3
+echo "Extrayendo sed-4.9.tar.xz"
+tar -xf sed-4.9.tar.xz
 cd sed-4.9
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
@@ -181,7 +207,9 @@ cd $LFS/sources/
 rm -rf sed-4.9
 
 echo "Tar-1.35"
-tar -xvf tar-1.35.tar.xz
+sleep 3
+echo "Extrayendo tar-1.35.tar.xz"
+tar -xf tar-1.35.tar.xz
 cd tar-1.35
 ./configure --prefix=/usr   \
             --host=$LFS_TGT \
@@ -192,7 +220,9 @@ cd $LFS/sources/
 rm -rf tar-1.35
 
 echo "xz-5.8.2"
-tar -xvf xz-5.8.2.tar.xz
+sleep 3
+echo "Extrayendo xz-5.8.2.tar.xz"
+tar -xf xz-5.8.2.tar.xz
 cd xz-5.8.2
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
@@ -206,7 +236,9 @@ cd $LFS/sources/
 rm -rf xz-5.8.2
 
 echo "Binutils-2.46.0 - Pass 2"
-tar -xvf binutils-2.46.0.tar.xz
+sleep 3
+echo "Extrayendo binutils-2.46.0.tar.xz"
+tar -xf binutils-2.46.0.tar.xz
 cd binutils-2.46.0
 sed '6031s/$add_dir//' -i ltmain.sh
 mkdir -v build
@@ -229,7 +261,9 @@ cd $LFS/sources/
 rm -rf binutils-2.46.0
 
 echo "GCC-15.2.0 - Pass 2"
-tar -xvf gcc-15.2.0.tar.xz
+sleep 3
+echo "Extrayendo gcc-15.2.0.tar.xz"
+tar -xf gcc-15.2.0.tar.xz
 cd gcc-15.2.0
 tar -xf ../mpfr-4.2.2.tar.xz
 mv -v mpfr-4.2.2 mpfr
