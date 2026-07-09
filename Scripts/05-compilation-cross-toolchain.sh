@@ -3,7 +3,9 @@
 cd $LFS/sources/
 
 echo "Binutils-2.46.0 - Pass 1"
-tar -xvf binutils-2.46.0.tar.xz
+sleep 3
+echo "Extrayendo binutils-2.46.0.tar.xz"
+tar -xf binutils-2.46.0.tar.xz
 cd binutils-2.46.0
 mkdir -v build
 cd build
@@ -18,10 +20,12 @@ cd build
 make
 make install
 cd $LFS/sources/
-rm -rf binutils-2.46.0
+rm -vrf binutils-2.46.0
 
 echo "GCC-15.2.0 - Pass 1"
-tar -xvf gcc-15.2.0.tar.xz
+sleep 3
+echo "Extrayendo gcc-15.2.0.tar.xz"
+tar -xf gcc-15.2.0.tar.xz
 cd gcc-15.2.0
 tar -xf ../mpfr-4.2.2.tar.xz
 mv -v mpfr-4.2.2 mpfr
@@ -66,7 +70,9 @@ cd $LFS/sources/
 rm -rf gcc-15.2.0
 
 echo "Linux-6.18.10 API Headers"
-tar -xvf linux-6.18.10.tar.xz
+sleep 3
+echo "Extrayendo linux-6.18.10.tar.xz"
+tar -xf linux-6.18.10.tar.xz
 cd linux-6.18.10
 make mrproper
 make headers
@@ -76,7 +82,9 @@ cd $LFS/sources/
 rm -rf linux-6.18.10
 
 echo "Glibc-2.43"
-tar -xvf glibc-2.43.tar.xz
+sleep 3
+echo "Extrayendo glibc-2.43.tar.xz"
+tar -xf glibc-2.43.tar.xz
 cd glibc-2.43
 case $(uname -m) in
     i?86)   ln -sfv ld-linux.so.2 $LFS/lib/ld-lsb.so.3
@@ -96,7 +104,6 @@ echo "rootsbindir=/usr/sbin" > configparms
       --disable-nscd                     \
       libc_cv_slibdir=/usr/lib           \
       --enable-kernel=5.4
-sleep 3
 make
 make DESTDIR=$LFS install
 sed '/RTLDLIST=/s@/usr@@g' -i $LFS/usr/bin/ldd
@@ -118,7 +125,9 @@ cd $LFS/sources/
 rm -rf glibc-2.43
 
 echo "Libstdc++ from GCC-15.2.0"
-tar -xvf gcc-15.2.0.tar.xz
+sleep 3
+echo "Extrayendo gcc-15.2.0.tar.xz"
+tar -xf gcc-15.2.0.tar.xz
 cd gcc-15.2.0
 mkdir -v build
 cd       build
