@@ -192,7 +192,7 @@ cd $LFS/sources/
 rm -rf tar-1.35
 
 echo "xz-5.8.2"
-tar -xvf xz-5.8.2.tar.gz
+tar -xvf xz-5.8.2.tar.xz
 cd xz-5.8.2
 ./configure --prefix=/usr                     \
             --host=$LFS_TGT                   \
