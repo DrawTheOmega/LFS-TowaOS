@@ -2,6 +2,8 @@
 
 #CHROOT
 
+cd /sources/glibc-2.43/build
+
 touch /etc/ld.so.conf
 sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
 make install

@@ -2,6 +2,8 @@
 
 #CHROOT
 
+cd /sources
+
 echo "Glibc-2.43"
 sleep 3
 echo "Extrayendo glibc-2.43.tar.xz"
