@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#CHROOT
+
 cd /sources
 
 echo "Man-pages-6.17"

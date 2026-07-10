@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# ROOT
+
 chown root:root $LFS/sources/*
 
 mkdir -pv $LFS/{etc,var} $LFS/usr/{bin,lib,sbin}
@@ -21,7 +23,3 @@ case $(uname -m) in
     x86_64) chown -v lfs $LFS/lib64 ;;
 esac
 su - lfs
-
-cat > ~/.bash_profile << "EOF"
-exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash
-EOF

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#LFS
+
 cd $LFS/sources/
 
 echo "M4-1.4.21"

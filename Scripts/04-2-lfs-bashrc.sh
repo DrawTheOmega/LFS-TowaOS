@@ -1,5 +1,7 @@
 #! /bin/bash
 
+#LFS
+
 #Ejecutar como el usuario lfs, no como root. Este script configura el entorno de compilación para LFS.
 if [ $(id -u) = "0" ]; then
     echo "Este script no debe ejecutarse como root. Por favor, ejecute como el usuario lfs."

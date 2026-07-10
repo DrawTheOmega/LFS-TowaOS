@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#ROOT
+
 # Para entrar en chroot si salimos de él
 
 chroot "$LFS" /usr/bin/env -i   \

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#LFS
+
 cd $LFS/sources/
 
 echo "Binutils-2.46.0 - Pass 1"

@@ -1,4 +1,5 @@
 #!/bin/bash
+# ROOT
 
 cat > ~/.bashrc << "EOF"
 umask 022
@@ -9,9 +10,6 @@ EOF
 source ~/.bashrc
 
 powerprofilesctl set performance
-
-apt update -y
-apt upgrade -y
 
 apt install -y build-essential bison gawk m4 texinfo wget curl git
 ln -svf /bin/bash /bin/sh
