@@ -107,3 +107,5 @@ sed -e '270a\
 make SHLIB_LIBS="-lncursesw"
 make install
 install -v -m644 doc/*.{ps,pdf,html,dvi} /usr/share/doc/readline-8.3
+cd /sources
+rm -rf readline-8.3

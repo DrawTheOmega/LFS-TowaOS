@@ -22,7 +22,7 @@ cd build
 make
 make install
 cd $LFS/sources/
-rm -vrf binutils-2.46.0
+rm -rf binutils-2.46.0
 
 echo "GCC-15.2.0 - Pass 1"
 sleep 3
