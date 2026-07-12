@@ -337,3 +337,158 @@ make install-html
 cd /sources
 rm -rf mpc-1.3.1
 
+echo "Attr-2.5.2"
+sleep 3
+echo "Extrayendo attr-2.5.2.tar.gz"
+tar -xf attr-2.5.2.tar.gz
+cd attr-2.5.2
+./configure --prefix=/usr     \
+            --disable-static  \
+            --sysconfdir=/etc \
+            --docdir=/usr/share/doc/attr-2.5.2
+make
+make check
+make install
+cd /sources
+rm -rf attr-2.5.2
+
+echo "Acl-2.3.2"
+sleep 3
+echo "Extrayendo acl-2.3.2.tar.gz"
+tar -xf acl-2.3.2.tar.gz
+cd acl-2.3.2
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/acl-2.3.2
+make
+make check
+make install
+cd /sources
+rm -rf acl-2.3.2
+
+echo "Libcap-2.77"
+sleep 3
+echo "Extrayendo libcap-2.77.tar.xz"
+tar -xf libcap-2.77.tar.xz
+cd libcap-2.77
+sed -i '/install -m.*STA/d' libcap/Makefile
+make prefix=/usr lib=lib
+make test
+make prefix=/usr lib=lib install
+cd /sources
+rm -rf libcap-2.77
+
+echo "Libxcrypt-4.5.2"
+sleep 3
+echo "Extrayendo libxcrypt-4.5.2.tar.xz"
+tar -xf libxcrypt-4.5.2.tar.xz
+cd libxcrypt-4.5.2
+sed -i '/strchr/s/const//' lib/crypt-{sm3,gost}-yescrypt.c
+./configure --prefix=/usr                \
+            --enable-hashes=strong,glibc \
+            --enable-obsolete-api=no     \
+            --disable-static             \
+            --disable-failure-tokens
+make
+make check
+make install
+#make distclean
+#./configure --prefix=/usr                \
+#            --enable-hashes=strong,glibc \
+#            --enable-obsolete-api=glibc  \
+#            --disable-static             \
+#            --disable-failure-tokens
+#make
+#cp -av --remove-destination .libs/libcrypt.so.1* /usr/lib
+cd /sources
+rm -rf libxcrypt-4.5.2
+
+echo "Shadow-4.19.3"
+sleep 3
+echo "Extrayendo shadow-4.19.3.tar.xz"
+tar -xf shadow-4.19.3.tar.xz
+cd shadow-4.19.3
+sed -i 's/groups$(EXEEXT) //' src/Makefile.in
+find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \;
+find man -name Makefile.in -exec sed -i 's/getspnam\.3 / /' {} \;
+find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
+sed -e 's:#ENCRYPT_METHOD DES:ENCRYPT_METHOD YESCRYPT:' \
+    -e 's:/var/spool/mail:/var/mail:'                   \
+    -e '/PATH=/{s@/sbin:@@;s@/bin:@@}'                  \
+    -i etc/login.defs
+touch /usr/bin/passwd
+./configure --sysconfdir=/etc   \
+            --disable-static    \
+            --with-{b,yes}crypt \
+            --without-libbsd    \
+            --disable-logind    \
+            --with-group-name-max-length=32
+make
+make exec_prefix=/usr install
+make -C man install-man
+
+echo "Configuring Shadow"
+pwconv
+grpconv
+mkdir -p /etc/default
+useradd -D --gid 999
+sed -i '/MAIL/s/yes/no/' /etc/default/useradd
+passwd root
+cd /sources
+rm -rf shadow-4.19.3
+
+echo "GCC-15.2.0"
+sleep 3
+echo "Extrayendo gcc-15.2.0.tar.xz"
+tar -xf gcc-15.2.0.tar.xz
+cd gcc-15.2.0
+sed -i 's/char [*]q/const &/' libgomp/affinity-fmt.c
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+  ;;
+esac
+mkdir -v build
+cd       build
+../configure --prefix=/usr            \
+             LD=ld                    \
+             --enable-languages=c,c++ \
+             --enable-default-pie     \
+             --enable-default-ssp     \
+             --enable-host-pie        \
+             --disable-multilib       \
+             --disable-bootstrap      \
+             --disable-fixincludes    \
+             --with-system-zlib
+make
+ulimit -s -H unlimited
+sed -e '/cpython/d' -i ../gcc/testsuite/gcc.dg/plugin/plugin.exp
+chown -R tester .
+su tester -c "PATH=$PATH make -k check"
+../contrib/test_summary
+make install
+chown -v -R root:root \
+    /usr/lib/gcc/$(gcc -dumpmachine)/15.2.0/include{,-fixed}
+ln -svr /usr/bin/cpp /usr/lib
+ln -sv gcc.1 /usr/share/man/man1/cc.1
+ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/15.2.0/liblto_plugin.so \
+        /usr/lib/bfd-plugins/
+echo 'int main(){}' | cc -x c - -v -Wl,--verbose &> dummy.log
+readelf -l a.out | grep ': /lib'
+sleep 3
+grep -E -o '/usr/lib.*/S?crt[1in].*succeeded' dummy.log
+sleep 3
+grep -B4 '^ /usr/include' dummy.log
+sleep 3
+grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
+sleep 3
+grep "/lib.*/libc.so.6 " dummy.log
+sleep 3
+grep found dummy.log
+sleep 3
+rm -v a.out dummy.log
+mkdir -pv /usr/share/gdb/auto-load/usr/lib
+mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib
+cd /sources
+rm -rf gcc-15.2.0
