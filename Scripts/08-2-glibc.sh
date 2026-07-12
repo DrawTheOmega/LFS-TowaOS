@@ -22,4 +22,6 @@ echo "rootsbindir=/usr/sbin" > configparms
 make
 make check
 
-echo " En caso de fallar algun paquete es recomendado hacer un test. io/tst-lchmod falla si o si por estar en chroot. Con grep "Timed out" $(find -name \*.out) podemos ver bien que pruebas fallaron, para testear hacer TIMEOUTFACTOR=10 make test t=<test name> (nss/tst-nss-files-hosts-multi por ejemplo)"
+echo 'En caso de fallar algun paquete es recomendado hacer un test. io/tst-lchmod falla si o si por estar en chroot.'
+echo 'Con grep "Timed out" $(find -name \*.out) podemos ver bien que pruebas fallaron.'
+echo 'Para testear hacer TIMEOUTFACTOR=10 make test t=<test name> (nss/tst-nss-files-hosts-multi por ejemplo)'

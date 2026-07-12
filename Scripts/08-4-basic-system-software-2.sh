@@ -109,3 +109,179 @@ make install
 install -v -m644 doc/*.{ps,pdf,html,dvi} /usr/share/doc/readline-8.3
 cd /sources
 rm -rf readline-8.3
+
+echo "Pcre2-10.47"
+sleep 3
+echo "Extrayendo pcre2-10.47.tar.gz"
+tar -xf pcre2-10.47.tar.bz2
+cd pcre2-10.47
+./configure --prefix=/usr                       \
+            --docdir=/usr/share/doc/pcre2-10.47 \
+            --enable-unicode                    \
+            --enable-jit                        \
+            --enable-pcre2-16                   \
+            --enable-pcre2-32                   \
+            --enable-pcre2grep-libz             \
+            --enable-pcre2grep-libbz2           \
+            --enable-pcre2test-libreadline      \
+            --disable-static
+make
+make check
+make install
+cd /sources
+rm -rf pcre2-10.47
+
+echo "M4-1.4.21"
+sleep 3
+echo "Extrayendo m4-1.4.21.tar.xz"
+tar -xf m4-1.4.21.tar.xz
+cd m4-1.4.21
+./configure --prefix=/usr
+make
+make check
+make install
+cd /sources
+rm -rf m4-1.4.21
+
+echo "Bc-5.3.2"
+sleep 3
+echo "Extrayendo bc-5.3.2.tar.xz"
+tar -xf bc-5.3.2.tar.xz
+cd bc-5.3.2
+CC='gcc -std=c99' ./configure --prefix=/usr -G -O3 -r
+make
+make test
+make install
+cd /sources
+rm -rf bc-5.3.2
+
+echo "Flex-2.6.4"
+sleep 3
+echo "Extrayendo flex-2.6.4.tar.gz"
+tar -xf flex-2.6.4.tar.gz
+cd flex-2.6.4
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/flex-2.6.4
+make
+make check
+make install
+ln -sv flex   /usr/bin/lex
+ln -sv flex.1 /usr/share/man/man1/lex.1
+cd /sources
+rm -rf flex-2.6.4
+
+echo "Tcl-8.6.17"
+sleep 3
+echo "Extrayendo tcl8.6.17-src.tar.gz"
+tar -xf tcl8.6.17-src.tar.gz
+cd tcl8.6.17
+SRCDIR=$(pwd)
+cd unix
+./configure --prefix=/usr           \
+            --mandir=/usr/share/man \
+            --disable-rpath
+make
+sed -e "s|$SRCDIR/unix|/usr/lib|" \
+    -e "s|$SRCDIR|/usr/include|"  \
+    -i tclConfig.sh
+sed -e "s|$SRCDIR/unix/pkgs/tdbc1.1.12|/usr/lib/tdbc1.1.12|" \
+    -e "s|$SRCDIR/pkgs/tdbc1.1.12/generic|/usr/include|"     \
+    -e "s|$SRCDIR/pkgs/tdbc1.1.12/library|/usr/lib/tcl8.6|"  \
+    -e "s|$SRCDIR/pkgs/tdbc1.1.12|/usr/include|"             \
+    -i pkgs/tdbc1.1.12/tdbcConfig.sh
+sed -e "s|$SRCDIR/unix/pkgs/itcl4.3.4|/usr/lib/itcl4.3.4|" \
+    -e "s|$SRCDIR/pkgs/itcl4.3.4/generic|/usr/include|"    \
+    -e "s|$SRCDIR/pkgs/itcl4.3.4|/usr/include|"            \
+    -i pkgs/itcl4.3.4/itclConfig.sh
+unset SRCDIR
+LC_ALL=C.UTF-8 make test
+make install 
+chmod 644 /usr/lib/libtclstub8.6.a
+chmod -v u+w /usr/lib/libtcl8.6.so
+make install-private-headers
+ln -sfv tclsh8.6 /usr/bin/tclsh
+mv -v /usr/share/man/man3/{Thread,Tcl_Thread}.3
+cd ..
+tar -xf ../tcl8.6.17-html.tar.gz --strip-components=1
+mkdir -v -p /usr/share/doc/tcl-8.6.17
+cp -v -r  ./html/* /usr/share/doc/tcl-8.6.17
+
+echo "Expect-5.45.4"
+sleep 3
+echo "Extrayendo expect5.45.4.tar.gz"
+tar -xf expect5.45.4.tar.gz
+cd expect5.45.4
+python3 -c 'from pty import spawn; spawn(["echo", "ok"])'
+patch -Np1 -i ../expect-5.45.4-gcc15-1.patch
+./configure --prefix=/usr           \
+            --with-tcl=/usr/lib     \
+            --enable-shared         \
+            --disable-rpath         \
+            --mandir=/usr/share/man \
+            --with-tclinclude=/usr/include
+make
+make test
+make install
+ln -svf expect5.45.4/libexpect5.45.4.so /usr/lib
+cd /sources
+rm -rf expect5.45.4
+
+echo "DejaGNU-1.6.3"
+sleep 3
+echo "Extrayendo dejagnu-1.6.3.tar.gz"
+tar -xf dejagnu-1.6.3.tar.gz
+cd dejagnu-1.6.3
+mkdir -v build
+cd       build
+../configure --prefix=/usr
+makeinfo --html --no-split -o doc/dejagnu.html ../doc/dejagnu.texi
+makeinfo --plaintext       -o doc/dejagnu.txt  ../doc/dejagnu.texi
+make check
+make install
+install -v -dm755  /usr/share/doc/dejagnu-1.6.3
+install -v -m644   doc/dejagnu.{html,txt} /usr/share/doc/dejagnu-1.6.3
+cd /sources
+rm -rf dejagnu-1.6.3
+
+echo "Pkgconf-2.5.1"
+sleep 3
+echo "Extrayendo pkgconf-2.5.1.tar.xz"
+tar -xf pkgconf-2.5.1.tar.xz
+cd pkgconf-2.5.1
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/pkgconf-2.5.1
+make
+make install
+ln -sv pkgconf   /usr/bin/pkg-config
+ln -sv pkgconf.1 /usr/share/man/man1/pkg-config.1
+cd /sources
+rm -rf pkgconf-2.5.1
+
+echo "Binutils-2.46.0"
+sleep 3
+echo "Extrayendo binutils-2.46.0.tar.xz"
+tar -xf binutils-2.46.0.tar.xz
+cd binutils-2.46.0
+mkdir -v build
+cd       build
+../configure --prefix=/usr       \
+             --sysconfdir=/etc   \
+             --enable-ld=default \
+             --enable-plugins    \
+             --enable-shared     \
+             --disable-werror    \
+             --enable-64-bit-bfd \
+             --enable-new-dtags  \
+             --with-system-zlib  \
+             --enable-default-hash-style=gnu
+make tooldir=/usr
+make -k check
+grep '^FAIL:' $(find -name '*.log')
+make tooldir=/usr install
+rm -rfv /usr/lib/lib{bfd,ctf,ctf-nobfd,gprofng,opcodes,sframe}.a \
+        /usr/share/doc/gprofng/
+cd /sources
+rm -rf binutils-2.46.0
+
