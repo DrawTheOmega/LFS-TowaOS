@@ -285,3 +285,55 @@ rm -rfv /usr/lib/lib{bfd,ctf,ctf-nobfd,gprofng,opcodes,sframe}.a \
 cd /sources
 rm -rf binutils-2.46.0
 
+echo "GMP-6.3.0"
+sleep 3
+echo "Extrayendo gmp-6.3.0.tar.xz"
+tar -xf gmp-6.3.0.tar.xz
+cd gmp-6.3.0
+sed -i '/long long t1;/,+1s/()/(...)/' configure
+./configure --prefix=/usr    \
+            --enable-cxx     \
+            --disable-static \
+            --docdir=/usr/share/doc/gmp-6.3.0
+make
+make html
+make check 2>&1 | tee gmp-check-log
+awk '/# PASS:/{total+=$3} ; END{print total}' gmp-check-log
+make install
+make install-html
+cd /sources
+rm -rf gmp-6.3.0
+
+echo "MPFR-4.2.2"
+sleep 3
+echo "Extrayendo mpfr-4.2.2.tar.xz"
+tar -xf mpfr-4.2.2.tar.xz
+cd mpfr-4.2.2
+./configure --prefix=/usr        \
+            --disable-static     \
+            --enable-thread-safe \
+            --docdir=/usr/share/doc/mpfr-4.2.2
+make
+make html
+make check
+make install
+make install-html
+cd /sources
+rm -rf mpfr-4.2.2
+
+echo "MPC-1.3.1"
+sleep 3
+echo "Extrayendo mpc-1.3.1.tar.gz"
+tar -xf mpc-1.3.1.tar.gz
+cd mpc-1.3.1
+./configure --prefix=/usr    \
+            --disable-static \
+            --docdir=/usr/share/doc/mpc-1.3.1
+make
+make html
+make check
+make install
+make install-html
+cd /sources
+rm -rf mpc-1.3.1
+
