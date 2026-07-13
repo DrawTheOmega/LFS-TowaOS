@@ -74,6 +74,8 @@ make prefix=/usr
 make check
 make prefix=/usr install
 rm -v /usr/lib/libzstd.a
+cd /sources
+rm -rf zstd-1.5.7
 
 echo "File-5.46"
 sleep 3
@@ -206,6 +208,8 @@ cd ..
 tar -xf ../tcl8.6.17-html.tar.gz --strip-components=1
 mkdir -v -p /usr/share/doc/tcl-8.6.17
 cp -v -r  ./html/* /usr/share/doc/tcl-8.6.17
+cd /sources
+rm -rf tcl8.6.17
 
 echo "Expect-5.45.4"
 sleep 3
