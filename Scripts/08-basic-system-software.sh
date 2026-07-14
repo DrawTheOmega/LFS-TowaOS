@@ -197,6 +197,8 @@ make prefix=/usr
 make check
 make prefix=/usr install
 rm -v /usr/lib/libzstd.a
+cd /sources
+rm -rf zstd-1.5.7
 
 echo "File-5.46"
 sleep 3
