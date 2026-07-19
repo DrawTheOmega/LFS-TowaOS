@@ -418,7 +418,7 @@ meson setup ..                \
       -D ukify=disabled       \
       -D docdir=/usr/share/doc/systemd-259.1
 ninja
-echo 'NAME="Linux From Scratch"' > /etc/os-release
+echo 'NAME="LFS TowaOS"' > /etc/os-release
 unshare -m ninja test
 ninja install
 tar -xf ../../systemd-man-pages-259.1.tar.xz \
