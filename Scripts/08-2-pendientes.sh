@@ -1,355 +1,512 @@
 #!/bin/bash
 
 #CHROOT
-#8.52
+#Revisar 8.75. Vim-9.2.0078 por el lenguaje, por las dudas
 cd /sources
 
-echo "Ncurses-6.6"
+echo "Python-3.14.3"
 sleep 3
-echo "Extrayendo ncurses-6.6.tar.gz"
-tar -xf ncurses-6.6.tar.gz
-cd ncurses-6.6
-./configure --prefix=/usr           \
-            --mandir=/usr/share/man \
-            --with-shared           \
-            --without-debug         \
-            --without-normal        \
-            --with-cxx-shared       \
-            --enable-pc-files       \
-            --with-pkg-config-libdir=/usr/lib/pkgconfig
+echo "Extrayendo Python-3.14.3.tar.xz"
+tar -xf Python-3.14.3.tar.xz
+cd Python-3.14.3
+./configure --prefix=/usr          \
+            --enable-shared        \
+            --with-system-expat    \
+            --enable-optimizations \
+            --without-static-libpython
 make
-make DESTDIR=$PWD/dest install
-sed -e 's/^#if.*XOPEN.*$/#if 1/' \
-    -i dest/usr/include/curses.h
-cp --remove-destination -av dest/* /
-for lib in ncurses form panel menu ; do
-    ln -sfv lib${lib}w.so /usr/lib/lib${lib}.so
-    ln -sfv ${lib}w.pc    /usr/lib/pkgconfig/${lib}.pc
-done
-ln -sfv libncursesw.so /usr/lib/libcurses.so
-cp -v -R doc -T /usr/share/doc/ncurses-6.6
+make test TESTOPTS="--timeout 120"
+make install
+cat > /etc/pip.conf << EOF
+[global]
+root-user-action = ignore
+disable-pip-version-check = true
+EOF
+install -v -dm755 /usr/share/doc/python-3.14.3/html
+tar --strip-components=1  \
+    --no-same-owner       \
+    --no-same-permissions \
+    -C /usr/share/doc/python-3.14.3/html \
+    -xvf ../python-3.14.3-docs-html.tar.bz2
 cd /sources
-rm -rf ncurses-6.6
+rm -rf Python-3.14.3
 
-echo "Sed-4.9"
+echo "Flit-Core-3.12.0"
 sleep 3
-echo "Extrayendo sed-4.9.tar.xz"
-tar -xf sed-4.9.tar.xz
-cd sed-4.9
+echo "Extrayendo flit_core-3.12.0.tar.gz"
+tar -xf flit_core-3.12.0.tar.gz
+cd flit_core-3.12.0
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+pip3 install --no-index --find-links dist flit_core
+cd /sources
+rm -rf flit_core-3.12.0
+
+echo "Packaging-26.0"
+sleep 3
+echo "Extrayendo packaging-26.0.tar.gz"
+tar -xf packaging-26.0.tar.gz
+cd packaging-26.0
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+pip3 install --no-index --find-links dist packaging
+cd /sources
+rm -rf packaging-26.0
+
+echo "Wheel-0.46.3"
+sleep 3
+echo "Extrayendo wheel-0.46.3.tar.gz"
+tar -xf wheel-0.46.3.tar.gz
+cd wheel-0.46.3
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+pip3 install --no-index --find-links dist wheel
+cd /sources
+rm -rf wheel-0.46.3
+
+echo "Wheel-0.46.3"
+sleep 3
+echo "Extrayendo wheel-0.46.3.tar.gz"
+tar -xf wheel-0.46.3.tar.gz
+cd wheel-0.46.3
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+pip3 install --no-index --find-links dist wheel
+cd /sources
+rm -rf wheel-0.46.3
+
+echo "Setuptools-82.0.0"
+sleep 3
+echo "Extrayendo setuptools-82.0.0.tar.gz"
+tar -xf setuptools-82.0.0.tar.gz
+cd setuptools-82.0.0
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+pip3 install --no-index --find-links dist setuptools
+cd /sources
+rm -rf setuptools-82.0.0
+
+echo "Ninja-1.13.2"
+sleep 3
+echo "Extrayendo ninja-1.13.2.tar.gz"
+tar -xf ninja-1.13.2.tar.gz
+cd ninja-1.13.2
+export NINJAJOBS=4
+sed -i '/int Guess/a \
+  int   j = 0;\
+  char* jobs = getenv( "NINJAJOBS" );\
+  if ( jobs != NULL ) j = atoi( jobs );\
+  if ( j > 0 ) return j;\
+' src/ninja.cc
+python3 configure.py --bootstrap --verbose
+install -vm755 ninja /usr/bin/
+install -vDm644 misc/bash-completion /usr/share/bash-completion/completions/ninja
+install -vDm644 misc/zsh-completion  /usr/share/zsh/site-functions/_ninja
+cd /sources
+rm -rf ninja-1.13.2
+
+echo "Meson-1.10.1"
+sleep 3
+echo "Extrayendo meson-1.10.1.tar.gz"
+tar -xf meson-1.10.1.tar.gz
+cd meson-1.10.1
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+pip3 install --no-index --find-links dist meson
+install -vDm644 data/shell-completions/bash/meson /usr/share/bash-completion/completions/meson
+install -vDm644 data/shell-completions/zsh/_meson /usr/share/zsh/site-functions/_meson
+cd /sources
+rm -rf meson-1.10.1
+
+echo "Kmod-34.2"
+sleep 3
+echo "Extrayendo kmod-34.2.tar.xz"
+tar -xf kmod-34.2.tar.xz
+cd kmod-34.2
+mkdir -p build
+cd       build
+meson setup --prefix=/usr ..    \
+            --buildtype=release \
+            -D manpages=false
+ninja
+ninja install
+cd /sources
+rm -rf kmod-34.2
+
+echo "Coreutils-9.10"
+sleep 3
+echo "Extrayendo coreutils-9.10.tar.xz"
+tar -xf coreutils-9.10.tar.xz
+cd coreutils-9.10
+patch -Np1 -i ../coreutils-9.10-i18n-1.patch
+autoreconf -fv
+automake -af
+FORCE_UNSAFE_CONFIGURE=1 ./configure \
+            --prefix=/usr
+make
+make NON_ROOT_USERNAME=tester check-root
+groupadd -g 102 dummy -U tester
+chown -R tester . 
+su tester -c "PATH=$PATH make -k RUN_EXPENSIVE_TESTS=yes check" \
+   < /dev/null
+groupdel dummy
+make install
+mv -v /usr/bin/chroot /usr/sbin
+mv -v /usr/share/man/man1/chroot.1 /usr/share/man/man8/chroot.8
+sed -i 's/"1"/"8"/' /usr/share/man/man8/chroot.8
+cd /sources
+rm -rf coreutils-9.10
+
+echo "Diffutils-3.12"
+sleep 3
+echo "Extrayendo diffutils-3.12.tar.xz"
+tar -xf diffutils-3.12.tar.xz
+cd diffutils-3.12
 ./configure --prefix=/usr
 make
-make html
+make check
+make install
+cd /sources
+rm -rf diffutils-3.12
+
+echo "Gawk-5.3.2"
+sleep 3
+echo "Extrayendo gawk-5.3.2.tar.xz"
+tar -xf gawk-5.3.2.tar.xz
+cd gawk-5.3.2
+sed -i 's/extras//' Makefile.in
+./configure --prefix=/usr
+make
+chown -R tester .
+su tester -c "PATH=$PATH make check"
+rm -f /usr/bin/gawk-5.3.2
+make install
+ln -sv gawk.1 /usr/share/man/man1/awk.1
+install -vDm644 doc/{awkforai.txt,*.{eps,pdf,jpg}} -t /usr/share/doc/gawk-5.3.2
+cd /sources
+rm -rf gawk-5.3.2
+
+echo "Findutils-4.10.0"
+sleep 3
+echo "Extrayendo findutils-4.10.0.tar.xz"
+tar -xf findutils-4.10.0.tar.xz
+cd findutils-4.10.0
+./configure --prefix=/usr --localstatedir=/var/lib/locate
+make
 chown -R tester .
 su tester -c "PATH=$PATH make check"
 make install
-install -d -m755           /usr/share/doc/sed-4.9
-install -m644 doc/sed.html /usr/share/doc/sed-4.9
 cd /sources
-rm -rf sed-4.9
+rm -rf findutils-4.10.0
 
-echo "Psmisc-23.7"
+echo "Groff-1.23.0"
 sleep 3
-echo "Extrayendo psmisc-23.7.tar.xz"
-tar -xf psmisc-23.7.tar.xz
-cd psmisc-23.7
+echo "Extrayendo groff-1.23.0.tar.gz"
+cd groff-1.23.0
+PAGE=<paper_size> ./configure --prefix=/usr
+make
+make check
+make install
+cd /sources
+rm -rf groff-1.23.0
+
+echo "GRUB-2.14"
+sleep 3
+echo "Extrayendo grub-2.14.tar.xz"
+tar -xf grub-2.14.tar.xz
+cd grub-2.14
+unset {C,CPP,CXX,LD}FLAGS
+sed 's/--image-base/--nonexist-linker-option/' -i configure
+./configure --prefix=/usr     \
+            --sysconfdir=/etc \
+            --disable-efiemu  \
+            --disable-werror
+make
+make install
+cd /sources
+rm -rf grub-2.14
+
+echo "Gzip-1.14"
+sleep 3
+echo "Extrayendo gzip-1.14.tar.xz"
+tar -xf gzip-1.14.tar.xz
+cd gzip-1.14
 ./configure --prefix=/usr
 make
 make check
 make install
 cd /sources
-rm -rf psmisc-23.7
+rm -rf gzip-1.14
 
-echo "Gettext-1.0"
+echo "IPRoute2-6.18.0"
 sleep 3
-tar -xf gettext-1.0.tar.xz
-cd gettext-1.0
-./configure --prefix=/usr    \
-            --disable-static \
-            --docdir=/usr/share/doc/gettext-1.0
+echo "Extrayendo iproute2-6.18.0.tar.xz"
+tar -xf iproute2-6.18.0.tar.xz
+cd iproute2-6.18.0
+sed -i /ARPD/d Makefile
+rm -fv man/man8/arpd.8
+make NETNS_RUN_DIR=/run/netns
+make SBINDIR=/usr/sbin install
+install -vDm644 COPYING README* -t /usr/share/doc/iproute2-6.18.0
+cd /sources
+rm -rf iproute2-6.18.0
+
+echo "Kbd-2.9.0"
+sleep 3
+echo "Extrayendo kbd-2.9.0.tar.xz"
+tar -xf kbd-2.9.0.tar.xz
+cd kbd-2.9.0
+patch -Np1 -i ../kbd-2.9.0-backspace-1.patch
+sed -i '/RESIZECONS_PROGS=/s/yes/no/' configure
+sed -i 's/resizecons.8 //' docs/man/man8/Makefile.in
+./configure --prefix=/usr --disable-vlock
 make
 make check
 make install
-chmod -v 0755 /usr/lib/preloadable_libintl.so
+cp -R -v docs/doc -T /usr/share/doc/kbd-2.9.0
 cd /sources
-rm -rf gettext-1.0
+rm -rf kbd-2.9.0
 
-echo "Bison-3.8.2"
+echo "Libpipeline-1.5.8"
 sleep 3
-tar -xf bison-3.8.2.tar.xz
-cd bison-3.8.2
-./configure --prefix=/usr --docdir=/usr/share/doc/bison-3.8.2
-make
-make check
-make install
-cd /sources
-rm -rf bison-3.8.2
-
-echo "Grep-3.12"
-sleep 3
-echo "Extrayendo grep-3.12.tar.xz"
-tar -xf grep-3.12.tar.xz
-cd grep-3.12
-sed -i "s/echo/#echo/" src/egrep.sh
+tar -xf libpipeline-1.5.8.tar.gz
+cd libpipeline-1.5.8
 ./configure --prefix=/usr
 make
-make check
 make install
 cd /sources
-rm -rf grep-3.12
+rm -rf libpipeline-1.5.8
 
-echo "Bash-5.3"
+echo "Make-4.4.1"
 sleep 3
-echo "Extrayendo bash-5.3.tar.gz"
-tar -xf bash-5.3.tar.gz
-cd bash-5.3
-./configure --prefix=/usr             \
-            --without-bash-malloc     \
-            --with-installed-readline \
-            --docdir=/usr/share/doc/bash-5.3
+tar -xf make-4.4.1.tar.gz
+cd make-4.4.1
+./configure --prefix=/usr
 make
 chown -R tester .
-LC_ALL=C.UTF-8 su -s /usr/bin/expect tester << "EOF"
-set timeout -1
-spawn make tests
-expect eof
-lassign [wait] _ _ _ value
-exit $value
+su tester -c "PATH=$PATH make check"
+make install
+cd /sources
+rm -rf make-4.4.1
+
+echo "Patch-2.8"
+sleep 3
+echo "Extrayendo patch-2.8.tar.xz"
+cd patch-2.8
+./configure --prefix=/usr
+make
+make check
+make install
+cd /sources
+rm -rf patch-2.8
+
+echo "Tar-1.35"
+sleep 3
+echo "Extrayendo tar-1.35.tar.xz"
+tar -xf tar-1.35.tar.xz
+cd tar-1.35
+FORCE_UNSAFE_CONFIGURE=1  \
+./configure --prefix=/usr
+make
+make check
+make install
+make -C doc install-html docdir=/usr/share/doc/tar-1.35
+cd /sources
+rm -rf tar-1.35
+
+echo "Texinfo-7.2"
+sleep 3
+echo "Extrayendo texinfo-7.2.tar.xz"
+tar -xf texinfo-7.2.tar.xz
+cd texinfo-7.2
+sed 's/! $output_file eq/$output_file ne/' -i tp/Texinfo/Convert/*.pm
+./configure --prefix=/usr
+make
+make check
+make install
+make TEXMF=/usr/share/texmf install-tex
+pushd /usr/share/info
+  rm -v dir
+  for f in *
+    do install-info $f dir 2>/dev/null
+  done
+popd
+cd /sources
+rm -rf texinfo-7.2
+
+echo "Vim-9.2.0078"
+sleep 3
+echo "Extrayendo vim-9.2.0078.tar.gz"
+tar -xf vim-9.2.0078.tar.gz
+cd vim-9.2.0078
+echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
+./configure --prefix=/usr
+make
+chown -R tester .
+sed '/test_plugin_glvs/d' -i src/testdir/Make_all.mak
+su tester -c "TERM=xterm-256color LANG=en_US.UTF-8 make -j1 test" \
+   &> vim-test.log
+make install
+ln -sv vim /usr/bin/vi
+for L in  /usr/share/man/{,*/}man1/vim.1; do
+    ln -sv vim.1 $(dirname $L)/vi.1
+done
+ln -sv ../vim/vim92/doc /usr/share/doc/vim-9.2.0078
+cat > /etc/vimrc << "EOF"
+" Begin /etc/vimrc
+
+" Ensure defaults are set before customizing settings, not after
+source $VIMRUNTIME/defaults.vim
+let skip_defaults_vim=1
+
+set nocompatible
+set backspace=2
+set mouse=
+syntax on
+if (&term == "xterm") || (&term == "putty")
+  set background=dark
+endif
+
+" End /etc/vimrc
 EOF
-make install
-exec /usr/bin/bash --login
+vim -c ':options'
+set spelllang=en,es
+set spell
 cd /sources
-rm -rf bash-5.3
+rm -rf vim-9.2.0078
 
-echo "Libtool-2.5.4"
+echo "MarkupSafe-3.0.3"
 sleep 3
-echo "Extrayendo libtool-2.5.4.tar.xz"
-tar -xf libtool-2.5.4.tar.xz
-cd libtool-2.5.4
-./configure --prefix=/usr
-make
-make check
-make install
-rm -fv /usr/lib/libltdl.a
+echo "Extrayendo markupsafe-3.0.3.tar.gz"
+tar -xf markupsafe-3.0.3.tar.gz
+cd markupsafe-3.0.3
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+pip3 install --no-index --find-links dist Markupsafe
 cd /sources
-rm -rf libtool-2.5.4
+rm -rf markupsafe-3.0.3
 
-echo "GDBM-1.26"
+echo "Jinja2-3.1.6"
 sleep 3
-echo "Extrayendo gdbm-1.26.tar.gz"
-tar -xf gdbm-1.26.tar.gz
-cd gdbm-1.26
-./configure --prefix=/usr    \
-            --disable-static \
-            --enable-libgdbm-compat
-make
-make check
-make install
+echo "Extrayendo jinja2-3.1.6.tar.gz"
+tar -xf jinja2-3.1.6
+cd jinja2-3.1.6
+pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+pip3 install --no-index --find-links dist Jinja2
 cd /sources
-rm -rf gdbm-1.26
+rm -rf jinja2-3.1.6
 
-echo "Gperf-3.3"
+echo "Systemd-259.1"
 sleep 3
-echo "Extrayendo gperf-3.3.tar.gz"
-tar -xf gperf-3.3.tar.gz
-cd gperf-3.3
-./configure --prefix=/usr --docdir=/usr/share/doc/gperf-3.3
-make
-make check
-make install
+echo "Extrayendo systemd-259.1.tar.gz"
+tar -xf systemd-259.1.tar.gz
+cd systemd-259.1
+sed -e 's/GROUP="render"/GROUP="video"/' \
+    -e 's/GROUP="sgx", //'               \
+    -i rules.d/50-udev-default.rules.in
+mkdir -p build
+cd       build
+meson setup ..                \
+      --prefix=/usr           \
+      --buildtype=release     \
+      -D default-dnssec=no    \
+      -D firstboot=false      \
+      -D install-tests=false  \
+      -D ldconfig=false       \
+      -D sysusers=false       \
+      -D rpmmacrosdir=no      \
+      -D homed=disabled       \
+      -D man=disabled         \
+      -D mode=release         \
+      -D pamconfdir=no        \
+      -D dev-kvm-mode=0660    \
+      -D nobody-group=nogroup \
+      -D sysupdate=disabled   \
+      -D ukify=disabled       \
+      -D docdir=/usr/share/doc/systemd-259.1
+ninja
+echo 'NAME="Linux From Scratch"' > /etc/os-release
+unshare -m ninja test
+ninja install
+tar -xf ../../systemd-man-pages-259.1.tar.xz \
+    --no-same-owner --strip-components=1     \
+    -C /usr/share/man
+systemd-machine-id-setup
+systemctl preset-all
 cd /sources
-rm -rf gperf-3.3
+rm -rf systemd-259.1
 
-echo "Expat-2.7.4"
+echo "D-Bus-1.16.2"
 sleep 3
-echo "Extrayendo expat-2.7.4.tar.xz"
-tar -xf expat-2.7.4.tar.xz
-cd expat-2.7.4
-./configure --prefix=/usr    \
-            --disable-static \
-            --docdir=/usr/share/doc/expat-2.7.4
-make
-make check
-make install
-install -v -m644 doc/*.{html,css} /usr/share/doc/expat-2.7.4
+echo "Extrayendo dbus-1.16.2.tar.xz"
+tar -xf dbus-1.16.2.tar.xz
+cd dbus-1.16.2
+mkdir build
+cd    build
+meson setup --prefix=/usr --buildtype=release --wrap-mode=nofallback ..
+ninja
+ninja test
+ninja install
+ln -sfv /etc/machine-id /var/lib/dbus
 cd /sources
-rm -rf expat-2.7.4
+rm -rf dbus-1.16.2
 
-echo "Inetutils-2.7"
+echo "Man-DB-2.13.1"
 sleep 3
-echo "Extrayendo inetutils-2.7.tar.gz"
-tar -xf inetutils-2.7.tar.gz
-cd inetutils-2.7
-sed -i 's/def HAVE_TERMCAP_TGETENT/ 1/' telnet/telnet.c
-./configure --prefix=/usr        \
-            --bindir=/usr/bin    \
-            --localstatedir=/var \
-            --disable-logger     \
-            --disable-whois      \
-            --disable-rcp        \
-            --disable-rexec      \
-            --disable-rlogin     \
-            --disable-rsh        \
-            --disable-servers
-make
-make check
-make install
-mv -v /usr/{,s}bin/ifconfig
-cd /sources
-rm -rf inetutils-2.7
-
-echo "Less-692"
-sleep 3
-echo "Extrayendo less-692.tar.gz"
-tar -xf less-692.tar.gz
-cd less-692
-./configure --prefix=/usr --sysconfdir=/etc
-make
-make check
-make install
-cd /sources
-rm -rf less-692
-
-echo "Perl-5.42.0"
-sleep 3
-tar -xf perl-5.42.0.tar.xz
-cd perl-5.42.0
-export BUILD_ZLIB=False
-export BUILD_BZIP2=0
-sh Configure -des                                          \
-             -D prefix=/usr                                \
-             -D vendorprefix=/usr                          \
-             -D privlib=/usr/lib/perl5/5.42/core_perl      \
-             -D archlib=/usr/lib/perl5/5.42/core_perl      \
-             -D sitelib=/usr/lib/perl5/5.42/site_perl      \
-             -D sitearch=/usr/lib/perl5/5.42/site_perl     \
-             -D vendorlib=/usr/lib/perl5/5.42/vendor_perl  \
-             -D vendorarch=/usr/lib/perl5/5.42/vendor_perl \
-             -D man1dir=/usr/share/man/man1                \
-             -D man3dir=/usr/share/man/man3                \
-             -D pager="/usr/bin/less -isR"                 \
-             -D useshrplib                                 \
-             -D usethreads
-make
-TEST_JOBS=$(nproc) make test_harness
-make install
-unset BUILD_ZLIB BUILD_BZIP2
-cd /sources
-rm -rf perl-5.42.0
-
-echo "XML::Parser-2.47"
-sleep 3
-echo "Extrayendo XML-Parser-2.47.tar.gz
-tar -xf XML-Parser-2.47.tar.gz
-cd XML-Parser-2.47
-perl Makefile.PL
-make
-make test
-make install
-cd /sources
-rm -rf XML-Parser-2.47
-
-echo "Intltool-0.51.0"
-sleep 3
-echo "Extrayendo intltool-0.51.0.tar.gz"
-tar -xf intltool-0.51.0.tar.gz
-cd intltool-0.51.0
-sed -i 's:\\\${:\\\$\\{:' intltool-update.in
-./configure --prefix=/usr
-make
-make check
-make install
-install -v -Dm644 doc/I18N-HOWTO /usr/share/doc/intltool-0.51.0/I18N-HOWTO
-cd /sources
-rm -rf intltool-0.51.0
-
-echo "Autoconf-2.72"
-sleep 3
-echo "Extrayendo autoconf-2.72.tar.xz"
-tar -xf autoconf-2.72.tar.xz
-cd autoconf-2.72
-./configure --prefix=/usr
+echo "Extrayendo man-db-2.13.1.tar.xz"
+tar -xf man-db-2.13.1.tar.xz
+cd man-db-2.13.1
+./configure --prefix=/usr                         \
+            --docdir=/usr/share/doc/man-db-2.13.1 \
+            --sysconfdir=/etc                     \
+            --disable-setuid                      \
+            --enable-cache-owner=bin              \
+            --with-browser=/usr/bin/lynx          \
+            --with-vgrind=/usr/bin/vgrind         \
+            --with-grap=/usr/bin/grap
 make
 make check
 make install
 cd /sources
-rm -rf autoconf-2.72
+rm -rf man-db-2.13.1
 
-echo "Automake-1.18.1"
+echo "Procps-ng-4.0.6"
 sleep 3
-echo "Extrayendo automake-1.18.1.tar.xz"
-tar -xf automake-1.18.1.tar.xz
-cd automake-1.18.1
-./configure --prefix=/usr --docdir=/usr/share/doc/automake-1.18.1
+echo "Extrayendo procps-ng-4.0.6.tar.xz"
+tar -xf procps-ng-4.0.6.tar.xz
+cd procps-ng-4.0.6
+./configure --prefix=/usr                           \
+            --docdir=/usr/share/doc/procps-ng-4.0.6 \
+            --disable-static                        \
+            --disable-kill                          \
+            --enable-watch8bit                      \
+            --with-systemd
 make
-make -j$(($(nproc)>4?$(nproc):4)) check
+chown -R tester .
+su tester -c "PATH=$PATH make check"
 make install
 cd /sources
-rm -rf automake-1.18.1
+rm -rf procps-ng-4.0.6
 
-echo "OpenSSL-3.6.1"
+echo "Util-linux-2.41.3"
 sleep 3
-echo "Extrayendo openssl-3.6.1.tar.gz"
-cd openssl-3.6.1
-./config --prefix=/usr         \
-         --openssldir=/etc/ssl \
-         --libdir=lib          \
-         shared                \
-         zlib-dynamic
+echo "Extrayendo util-linux-2.41.3.tar.xz"
+tar -xf util-linux-2.41.3.tar.xz
+cd util-linux-2.41.3
+./configure --bindir=/usr/bin     \
+            --libdir=/usr/lib     \
+            --runstatedir=/run    \
+            --sbindir=/usr/sbin   \
+            --disable-chfn-chsh   \
+            --disable-login       \
+            --disable-nologin     \
+            --disable-su          \
+            --disable-setpriv     \
+            --disable-runuser     \
+            --disable-pylibmount  \
+            --disable-liblastlog2 \
+            --disable-static      \
+            --without-python      \
+            ADJTIME_PATH=/var/lib/hwclock/adjtime \
+            --docdir=/usr/share/doc/util-linux-2.41.3
 make
-HARNESS_JOBS=$(nproc) make test
-sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
-make MANSUFFIX=ssl install
-mv -v /usr/share/doc/openssl /usr/share/doc/openssl-3.6.1
-cp -vfr doc/* /usr/share/doc/openssl-3.6.1
-cd /sources
-rm -rf openssl-3.6.1
-
-echo "Libelf from Elfutils-0.194"
-sleep 3
-echo "Extrayendo elfutils-0.194.tar.bz2"
-tar -xf elfutils-0.194.tar.bz2
-cd elfutils-0.194
-./configure --prefix=/usr        \
-            --disable-debuginfod \
-            --enable-libdebuginfod=dummy
-make -C lib
-make -C libelf
-make -C libelf install
-install -vm644 config/libelf.pc /usr/lib/pkgconfig
-rm /usr/lib/libelf.a
-cd /sources
-rm -rf elfutils-0.194
-
-echo "Libffi-3.5.2"
-sleep 3
-echo "Extrayendo libffi-3.5.2.tar.gz"
-tar -xf libffi-3.5.2.tar.gz
-cd libffi-3.5.2
-./configure --prefix=/usr    \
-            --disable-static \
-            --with-gcc-arch=native
-make
-make check
+#bash tests/run.sh --srcdir=$PWD --builddir=$PWD #Para probar el paquete, puede romper el sistema si se ejecuta como root
+touch /etc/fstab
+chown -R tester .
+su tester -c "make -k check"
 make install
 cd /sources
-rm -rf libffi-3.5.2
-
-echo "Sqlite-3510200"
-sleep 3
-echo "Extrayendo sqlite-autoconf-3510200.tar.gz"
-tar -xf sqlite-autoconf-3510200.tar.gz
-cd sqlite-autoconf-3510200
-tar -xf ../sqlite-doc-3510200.tar.xz
-./configure --prefix=/usr     \
-            --disable-static  \
-            --enable-fts{4,5} \
-            CPPFLAGS="-D SQLITE_ENABLE_COLUMN_METADATA=1 \
-                      -D SQLITE_ENABLE_UNLOCK_NOTIFY=1   \
-                      -D SQLITE_ENABLE_DBSTAT_VTAB=1     \
-                      -D SQLITE_SECURE_DELETE=1"
-make LDFLAGS.rpath=""
-make install
-install -v -m755 -d /usr/share/doc/sqlite-3.51.2
-cp -v -R sqlite-doc-3510200/* /usr/share/doc/sqlite-3.51.2
-cd /sources
-rm -rf sqlite-autoconf-3510200
+rm -rf
