@@ -8,8 +8,8 @@ La idea es crear una ditro en base a Tokoyami Towa, aunque recién en BLFS va a 
 No soy muy bueno con github así que la estructura de los archivos esté mal o sea muy básica, disculpas por eso.
 
 # Indice
-[02 - Preparativos del Sistema](Capitulos/02-Preparing_the_Host_System.md)
-[02.1 - Particiones de ejemplo](Capitulos/02.1-Particiones.md)
+02. [Preparativos del Sistema](Capitulos/02-Preparing_the_Host_System.md)
+02-1. [Particiones de ejemplo](Capitulos/02.1-Particiones.md)
 [03 - Paquetes y Parches](Capitulos/03-Packages_and_Patches.md)
 [03.1 - Paquetes](Capitulos/03.1-wget-list-systemd)
 [03.2 - Chequeo de paquetes](Capitulos/03.2-md5sums)
