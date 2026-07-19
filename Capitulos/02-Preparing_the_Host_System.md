@@ -67,12 +67,12 @@ La forma de crear el File System es con el siguiente comando:
     
     mkfs -v -t ext4 /dev/<xxx>
 
-Donde -v es la flag de verbose para ver en detalle el trabajo que se hace, -t es la flag de type para declarar el tipo de FS que se quiere (ext2, ext3, ext4, fat, etc) y "<xxx>" siendo la partición a asignar.
+Donde -v es la flag de verbose para ver en detalle el trabajo que se hace, -t es la flag de type para declarar el tipo de FS que se quiere (ext2, ext3, ext4, fat, etc) y "`<xxx>`" siendo la partición a asignar.
 Para crear el FS de swap se usa el siguiente comando:
     
     mkswap /dev/<yyy>
 
-Donde "<yyy>" es la partición destinada al swap.
+Donde "`<yyy>`" es la partición destinada al swap.
 
 En "Particiones.md" se deja un ejemplo de como se trabajarán las particiones
 
@@ -93,7 +93,7 @@ La manera de montar las particiones es primero crear el directorio, vamos a apro
     mkdir -pv $LFS
     mount -v -t ext4 /dev/<xxx> $LFS
 
-Donde -p en mkdir es crear los directorios necesarios hasta llegar al deseado y "<xxx>" es la unidad que se monta con mount.
+Donde -p en mkdir es crear los directorios necesarios hasta llegar al deseado y "`<xxx>`" es la unidad que se monta con mount.
 
 Si se desea tener varias particiones es recomendado el siguiente formato:
 
@@ -111,7 +111,7 @@ Y por último, para asignar el swap se usa el comando swapon (puede no tener un 
 
     /sbin/swapon -v /dev/<zzz>
 
-Donde "<zzz>" es la partición destinada al swap
+Donde "`<zzz>`" es la partición destinada al swap
 
 En "02-mount.sh" se deja como se usará en estas pruebas.
 
