@@ -18,6 +18,7 @@ Se van a crear dentro de $LFS los directorios /etc, /var, /usr/bin, /usr/lib, /u
 Luego se crean enlaces simbólicos desde /usr/ hacia el raiz de /bin, /lib y /sbin.
 
 Luego se crea un directorio para la compilación cruzada (capítulo 6 y mejor explicado en la documentación oficial)
+
     mkdir -pv $LFS/tools
 
 ## Usuario lfs
@@ -61,6 +62,7 @@ Vamos a establecer las variables de entorno para el usuario LFS asi como la conf
 
 Esta va a ser la media tomada para ver cuanto tiempo tarda un paquete en compilar. No es una medida precisa ya que depende totalmente del sistema del host. Por ejemplo, binutils tiene un tiempo de 4.5 SBU que puede tardar 4 minutos en compilar e instalar la primer parte hasta unos 18 minutos.
 Es posible aumentar un poco el rendimiento mediante powerprofilesctl:
+
     powerprofilesctl set performance
 
 ## Testing
