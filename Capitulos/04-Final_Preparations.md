@@ -11,7 +11,7 @@ Se van a crear los directorios finales que debería tener cualquier sistema Linu
     done
 
     case $(uname -m) in
-    x86_64) mkdir -pv $LFS/lib64 ;;
+        x86_64) mkdir -pv $LFS/lib64 ;;
     esac
 
 Se van a crear dentro de $LFS los directorios /etc, /var, /usr/bin, /usr/lib, /usr/sbin y en caso de ser un sistema x86_64 se crea el directorio /lib64.
@@ -30,7 +30,7 @@ En este punto se va a crear el usuario encargado de realizar los primeros pasos 
     passwd lfs
     chown -v lfs $LFS/{usr{,/*},var,etc,tools}
     case $(uname -m) in
-      x86_64) chown -v lfs $LFS/lib64 ;;
+        x86_64) chown -v lfs $LFS/lib64 ;;
     esac
     su - lfs
 

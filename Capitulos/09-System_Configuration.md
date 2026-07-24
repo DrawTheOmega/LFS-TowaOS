@@ -3,9 +3,11 @@
 ## General Network Configuration
 
 Se va a trabajar con el daemon de "systemd-networkd" para la red y "systemd-resolved" para los DNS. En caso de no usar el primero porque no se quiere tener salida a internet o se usa otro como "NetworkManager" hay que deshabilitar el daemon
+
     systemctl disable systemd-networkd-wait-online
 
 Los archivos de configuración por lo general están en /etc/systemd/network o /usr/lib/systemd/network, pero los de /etc/systemd/network tienen más prioridad. Hay 3 tipos de archivos de configuración:
+
     .link
     .netdev
     .network
@@ -15,9 +17,11 @@ Los archivos de configuración por lo general están en /etc/systemd/network o /
 Udev asigna nombres en base a las características de la placa física, como enp2s1. Con el comando "ip link" se puede ver el nombre que tiene la placa. Para usar un nombre default o custom hay 3 caminos:
 
 Primero se crea un archivo .link que apunte a /dev/null para anular la udev rule:
+
     ln -s /dev/null /etc/systemd/network/99-default.link
 
 Luego podemos asignar una placa por mac:
+
     cat > /etc/systemd/network/10-ether0.link << "EOF"
     [Match]
     # Change the MAC address as appropriate for your network device
@@ -28,6 +32,7 @@ Luego podemos asignar una placa por mac:
     EOF
 
 Podemos asignar una placa con ip fija:
+
     cat > /etc/systemd/network/10-eth-static.network << "EOF"
     [Match]
     Name=<network-device-name>
@@ -40,6 +45,7 @@ Podemos asignar una placa con ip fija:
     EOF
 
 O podemos asignar por DHCP:
+
     cat > /etc/systemd/network/10-eth-dhcp.network << "EOF"
     [Match]
     Name=<network-device-name>
@@ -54,9 +60,11 @@ O podemos asignar por DHCP:
 ### Resolv.conf
 
 Al igual que con systemd-networkd, si pensamos usar otro servicio de DNS que no sea resolved debemos deshabilitarlo:
+
     systemctl disable systemd-resolved
 
 Con un archivo de resolv.conf estático:
+
     cat > /etc/resolv.conf << "EOF"
     # Begin /etc/resolv.conf
 
@@ -72,19 +80,23 @@ El campo de "domain" puede ser omitido o reemplazado con "search .", mientras qu
 ### Hostname
 
 El archivo de /etc/hostname se usa para asignarle el nombre al equipo cuando bootea. Para crearlo corremos el siguiente comando:
+
     echo "<lfs-towaos>" > /etc/hostname
 
 ### Hosts
 
 Podemos crear el archivo /etc/hosts para resolver nuestro propio nombre o algún otro personalizado, el formato es el siguiente:
+
     IP_address myhost.example.org aliases
 
 Es importante respetar los diferentes rangos de ip para no tener conflictos cuando se conecte con internet, el rango usado debería ser de los privados de clase C
 
-Private Network Address Range      Normal Prefix
-10.0.0.1 - 10.255.255.254           8
-172.x.0.1 - 172.x.255.254           16
-192.168.y.1 - 192.168.y.254         24
+    Private Network Address Range      Normal Prefix
+    10.0.0.1 - 10.255.255.254           8
+    172.x.0.1 - 172.x.255.254           16
+    192.168.y.1 - 192.168.y.254         24
+
+Esta sería una configuración del archivo hosts
 
     cat > /etc/hosts << "EOF"
     # Begin /etc/hosts
@@ -97,4 +109,4 @@ Private Network Address Range      Normal Prefix
     # End /etc/hosts
     EOF
 
-Habría que cambiar <192.168.0.2> y <FQDN> por los deseados.
+Habría que cambiar `<192.168.0.2>` y `<FQDN>` por los deseados.
