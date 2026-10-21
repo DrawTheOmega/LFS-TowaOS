@@ -29,7 +29,16 @@ Esta es una lista del software que se necesitará para el proceso, con sus versi
 - Texinfo-5.0
 - Xz-5.0.0
 
-Con el script de "01-version-check.sh" se puede revisar las versiones de los programas requeridos para el proceso.
+Con el script de "02-version-check.sh" se puede revisar las versiones de los programas requeridos para el proceso.
+Es posible que Coreutils diga que tiene una versión vieja, habría que ver con `sort --version` que versión está instalada. Es posible que tengan la siguiente:
+
+    sort (uutils coreutils) 0.10.0
+
+En este caso habría que desinstalarlo con el siguiente comando para que lo reemplaze con la versión correcta:
+
+    apt remove coreutils-from-uutils --allow-remove-essential
+
+Luego se vuelve a ejecutar el script "02-version-check.sh".
 
 ## Particiones
 
