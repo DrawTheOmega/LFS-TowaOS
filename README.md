@@ -1,5 +1,5 @@
 # LFS-TowaOS
-Pasos para replicar LFS base, es recomendable la lectura de la documentación original (https://www.linuxfromscratch.org/lfs/) ya que va a estar mucho mejor explicado.
+Pasos para replicar [LFS 13.0](https://www.linuxfromscratch.org/lfs/view/13.0-systemd/), es recomendable la lectura de la documentación original ya que va a estar mucho mejor explicado.
 
 Arranqué este proyecto porque un amigo me retó, y ya que estaba quería aprender un poco más de como funciona linux. Aunque deje algunos scripts para automatizar el proceso es más divertido ir punto por punto con calma.
 
