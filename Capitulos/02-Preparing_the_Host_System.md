@@ -122,4 +122,4 @@ Y por último, para asignar el swap se usa el comando swapon (puede no tener un 
 
 Donde `<zzz>` es la partición destinada al swap
 
-En ["03-preparation.sh"](../Scripts/03-preparation.sh) se deja como se usará en estas pruebas, así como se modifica el archivo de `/etc/fstab` en caso de no hacer todo el proceso en un solo día (o dejar el equipo prendido hasta terminar).
+En ["03-01-partitions.sh"](../Scripts/03-01-partitions.sh) se deja como se usará en estas pruebas, así como se modifica el archivo de `/etc/fstab` en caso de no hacer todo el proceso en un solo día (o dejar el equipo prendido hasta terminar).

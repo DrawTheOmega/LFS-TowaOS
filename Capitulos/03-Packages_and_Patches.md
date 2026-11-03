@@ -9,11 +9,11 @@ Para poder trabajar cómodamente se va a crear un directorio donde descargaremos
     mkdir -v $LFS/sources
     chmod -v a+wt $LFS/sources
 
-Descargue el archivo de ["wget-list-systemd"](https://www.linuxfromscratch.org/lfs/view/stable-systemd/wget-list-systemd) para tener el listado de paquetes en un archivo, posteriormente usar el siguiente comando para descargar todo en el directorio de sources:
+Descargue el archivo de ["wget-list-systemd"](https://www.linuxfromscratch.org/lfs/view/13.0-systemd/wget-list-systemd) para tener el listado de paquetes en un archivo, posteriormente usar el siguiente comando para descargar todo en el directorio de sources:
 
     wget --input-file=wget-list-systemd --continue --directory-prefix=$LFS/sources
 
-Hacer lo mismo con el archivo de ["md5sums"] (https://www.linuxfromscratch.org/lfs/view/stable-systemd/md5sums) para comparar los hashes de los paquetes descargados con los deseados:
+Hacer lo mismo con el archivo de ["md5sums"] (https://www.linuxfromscratch.org/lfs/view/13.0-systemd/md5sums) para comparar los hashes de los paquetes descargados con los deseados:
 
     pushd $LFS/sources
         md5sum -c md5sums
