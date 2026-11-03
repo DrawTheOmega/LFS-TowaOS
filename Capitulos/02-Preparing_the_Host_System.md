@@ -47,7 +47,7 @@ Para esta parte se usará fdisk o cfdisk así que conviene investigar un poco.
 
 ### Problemas en las particiones
 
-Las solicitudes de asesoramiento sobre la partición del sistema suelen publicarse en el Listas de correo de LFS. Este es un tema muy subjetivo. El predeterminado para la mayoría de las distribuciones es usar toda la unidad con la Excepto una pequeña partición de swap. Esto no es lo óptimo para el LFS Por varias razones. Reduce la flexibilidad y facilita el intercambio de datos entre múltiples distribuciones o construcciones LFS más difíciles, hace que las copias de seguridad consumen más tiempo y pueden desperdiciar espacio en disco asignación ineficiente de estructuras del sistema de archivos.
+Las solicitudes de asesoramiento sobre la partición del sistema suelen publicarse en el Listas de correo de LFS. Este es un tema muy subjetivo. El predeterminado para la mayoría de las distribuciones es usar toda la unidad con una pequeña partición de swap. Esto tiene sus pros y sus contras, facilita el intercambio de datos entre múltiples distribuciones o construcciones LFS más difíciles si se crean las mismas particiones pero por esto mismo reduce la flexibilidad al depender de un sistema fijo, hace que las copias de seguridad consumen más tiempo y pueden desperdiciar espacio en disco asignación ineficiente de estructuras del sistema de archivos.
 
 #### Partición raiz
 
@@ -122,6 +122,4 @@ Y por último, para asignar el swap se usa el comando swapon (puede no tener un 
 
 Donde `<zzz>` es la partición destinada al swap
 
-En "02-mount.sh" se deja como se usará en estas pruebas.
-
-En caso de no hacer todo el proceso en un solo día (o dejar el equipo prendido hasta terminar) se recomienda agregar en fstab las particiones para no tener que asignarlas cada vez. En "03-fstab.sh" hay un ejemplo de como sería.
+En ["03-preparation.sh"](../Scripts/03-preparation.sh) se deja como se usará en estas pruebas, así como se modifica el archivo de `/etc/fstab` en caso de no hacer todo el proceso en un solo día (o dejar el equipo prendido hasta terminar).
