@@ -4,7 +4,7 @@
 
 En este capítulo se van a compilar los paquetes más básicos para un sistema Linux. Es recomendable usar las versiones presentadas ya que son las que se probaron en el proyecto. Es posible que algunos paquetes hayan cambiado el path de descarga, en ese caso se deberá buscar manualmente esos paquetes. En caso de no poder encontrarlo se puede usar el [Repositorio de LFS](https://www.linuxfromscratch.org/lfs/mirrors.html#files) aunque no tienen un reposotiorio en America Latina sigue siendo muy útil.
 
-Para poder trabajar cómodamente se va a crear un directorio donde descargaremos y compilaremos todos los paquetes. Para este proceso es importante hacerlo como root ya que es el que tiene permisos de modificar y crear archivos en el directorio de $LFS (si no se usó otro). Ese mismo directorio hay que darle la característica de "Sticky", lo que permite que los usuarios autorizados pueden crear archivos pero solo el propietario de ese archivo puede eliminarlo.
+Para poder trabajar cómodamente se va a crear un directorio donde descargaremos y compilaremos todos los paquetes. Para este proceso es importante hacerlo como root ya que es el que tiene permisos de modificar y crear archivos en el directorio de `$LFS` (si no se usó otro). Ese mismo directorio hay que darle la característica de "Sticky", lo que permite que los usuarios autorizados pueden crear archivos pero solo el propietario de ese archivo puede eliminarlo.
 
     mkdir -v $LFS/sources
     chmod -v a+wt $LFS/sources

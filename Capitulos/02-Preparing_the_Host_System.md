@@ -29,7 +29,7 @@ Esta es una lista del software que se necesitará para el proceso, con sus versi
 - Texinfo-5.0
 - Xz-5.0.0
 
-Con el script de "02-version-check.sh" se puede revisar las versiones de los programas requeridos para el proceso.
+Con el script de ["02-version-check.sh"](../Scripts/02-version-check.sh) se puede revisar las versiones de los programas requeridos para el proceso.
 Es posible que Coreutils diga que tiene una versión vieja, habría que ver con `sort --version` que versión está instalada. Es posible que tengan la siguiente:
 
     sort (uutils coreutils) 0.10.0
@@ -38,7 +38,7 @@ En este caso habría que desinstalarlo con el siguiente comando para que lo reem
 
     apt remove coreutils-from-uutils --allow-remove-essential
 
-Luego se vuelve a ejecutar el script "02-version-check.sh".
+Luego se vuelve a ejecutar el script ["02-version-check.sh"](../Scripts/02-version-check.sh).
 
 ## Particiones
 
@@ -76,24 +76,24 @@ La forma de crear el File System es con el siguiente comando:
     
     mkfs -v -t ext4 /dev/<xxx>
 
-Donde -v es la flag de verbose para ver en detalle el trabajo que se hace, -t es la flag de type para declarar el tipo de FS que se quiere (ext2, ext3, ext4, fat, etc) y `<xxx>` siendo la partición a asignar.
+Donde `-v` es la flag de verbose para ver en detalle el trabajo que se hace, `-t` es la flag de type para declarar el tipo de FS que se quiere (ext2, ext3, ext4, fat, etc) y `<xxx>` siendo la partición a asignar.
 Para crear el FS de swap se usa el siguiente comando:
     
     mkswap /dev/<yyy>
 
 Donde `<yyy>` es la partición destinada al swap.
 
-En "Particiones.md" se deja un ejemplo de como se trabajarán las particiones
+En ["02.1-Particiones.md"](02.1-Particiones.md) se deja un ejemplo de como se trabajarán las particiones
 
 ## Seteando las variables
-Se recomienda el uso de variables de entorno ya que durante todo el proceso se usaran comandos donde las rutas apuntadas están declaradas como por ejemplo "$LFS/tools". Las variables son:
+Se recomienda el uso de variables de entorno ya que durante todo el proceso se usaran comandos donde las rutas apuntadas están declaradas como por ejemplo `$LFS/tools`. Las variables son:
 
     export LFS=/mnt/lfs
     umask 022
     export MAKEFLAGS=-j$(nproc)
 
 Configurar el umask en 022 garantiza que los archivos recién creados y Los directorios solo pueden ser escritos por su propietario, pero son legibles por cualquiera. Un umask excesivamente permisivo puede dejar huecos de seguridad en el LFS, y un umask demasiado restrictivo puede causar extraños problemas para construir o usar el sistema LFS.
-Para una mayor comodidad puede convenir declarar las variables en ~/.bashrc por si se cierra sesión y se sigue más adelante.
+Para una mayor comodidad puede convenir declarar las variables en `~/.bashrc` por si se cierra sesión y se sigue más adelante.
 
 ## Montando las particiones
 

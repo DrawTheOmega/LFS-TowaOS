@@ -14,8 +14,8 @@ Se van a crear los directorios finales que debería tener cualquier sistema Linu
         x86_64) mkdir -pv $LFS/lib64 ;;
     esac
 
-Se van a crear dentro de $LFS los directorios /etc, /var, /usr/bin, /usr/lib, /usr/sbin y en caso de ser un sistema x86_64 se crea el directorio /lib64.
-Luego se crean enlaces simbólicos desde /usr/ hacia el raiz de /bin, /lib y /sbin.
+Se van a crear dentro de $LFS los directorios `/etc`, `/var`, `/usr/bin`, `/usr/lib`, `/usr/sbin` y en caso de ser un sistema x86_64 se crea el directorio `/lib64`.
+Luego se crean enlaces simbólicos desde `/usr/` hacia el raiz de `/bin`, `/lib` y `/sbin`.
 
 Luego se crea un directorio para la compilación cruzada (capítulo 6 y mejor explicado en la documentación oficial)
 
