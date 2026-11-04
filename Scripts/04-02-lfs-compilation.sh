@@ -452,4 +452,3 @@ make DESTDIR=$LFS install
 ln -sv gcc $LFS/usr/bin/cc
 cd $LFS/sources/
 rm -rf gcc-15.2.0
-exit
